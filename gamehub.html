@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ultimate Super Mega Epic Online GameHub Gaming Arcade Adventure Center</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff}
+header{padding:24px 7%;display:flex;justify-content:space-between;align-items:center;background:#111936;position:sticky;top:0;z-index:5}
+.logo{font-size:28px;font-weight:800;color:#7c8cff}.logo span{color:#fff}
+button{border:0;border-radius:12px;padding:11px 16px;background:#6675ff;color:white;font-weight:700;cursor:pointer}
+.hero{padding:65px 7%;background:linear-gradient(135deg,#18245a,#10142b)}
+.hero h1{font-size:48px;margin:0 0 12px}.hero p{color:#b9c2df;font-size:18px;max-width:650px}
+.controls{padding:25px 7%;display:flex;gap:12px;flex-wrap:wrap}.controls input{flex:1;min-width:220px;padding:13px 16px;border-radius:12px;border:1px solid #303a62;background:#151c37;color:#fff}
+.grid{padding:10px 7% 50px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:#151c37;border:1px solid #29345b;border-radius:18px;padding:20px;transition:.2s}.card:hover{transform:translateY(-4px);border-color:#6675ff}
+.icon{font-size:45px}.card h3{margin:10px 0 6px}.card p{color:#9fa9c8;min-height:42px}.tag{display:inline-block;color:#aeb7ff;font-size:12px;margin-bottom:12px}
+.modal{display:none;position:fixed;inset:0;background:#0009;align-items:center;justify-content:center;z-index:10}.modal.show{display:flex}.box{background:#151c37;border:1px solid #39446d;border-radius:20px;padding:28px;max-width:520px;width:90%;text-align:center}
+footer{text-align:center;color:#727c9f;padding:30px}
+</style>
+</head>
+<body>
+<header><div class="logo">Ultimate Super Mega Epic Online GameHub Gaming Arcade Adventure Center 🎮</div><button onclick="randomGame()">🎲 Random Game</button></header>
+<section class="hero"><h1>Welcome to GameHub</h1><p>A simple game hub for your favorite browser games and quick mini-games.</p><button onclick="scrollToGames()">Browse Games</button></section>
+<div class="controls"><input id="search" placeholder="Search games..." oninput="filterGames()"><button onclick="showAll()">All</button><button onclick="filterCat('arcade')">Arcade</button><button onclick="filterCat('puzzle')">Puzzle</button><button onclick="filterCat('action')">Action</button></div>
+<main class="grid" id="grid">
+<div class="card" data-name="reaction rush" data-cat="arcade"><div class="icon">⚡</div><span class="tag">ARCADE</span><h3>Reaction Rush</h3><p>Click the button as soon as it appears.</p><button onclick="reaction()">Play</button></div>
+<div class="card" data-name="number guess" data-cat="puzzle"><div class="icon">🔢</div><span class="tag">PUZZLE</span><h3>Number Guess</h3><p>Guess the secret number from 1–100.</p><button onclick="guess()">Play</button></div>
+<div class="card" data-name="click challenge" data-cat="arcade"><div class="icon">🖱️</div><span class="tag">ARCADE</span><h3>Click Challenge</h3><p>How many times can you click in 10 seconds?</p><button onclick="clicker()">Play</button></div>
+<div class="card" data-name="memory match" data-cat="puzzle"><div class="icon">🧠</div><span class="tag">PUZZLE</span><h3>Memory Match</h3><p>Test your memory with a quick matching game.</p><button onclick="memory()">Play</button></div>
+<div class="card" data-name="space dodge" data-cat="action"><div class="icon">🚀</div><span class="tag">ACTION</span><h3>Space Dodge</h3><p>Dodge incoming asteroids and survive.</p><button onclick="space()">Play</button></div>
+<div class="card" data-name="stickman duels" data-cat="action"><div class="icon">🥊</div><span class="tag">2 PLAYER</span><h3>Stickman Duels</h3><p>Battle a friend in a simple 2-player stickman duel.</p><button onclick="stickman()">Play</button></div>
+<div class="card" data-name="coin flip" data-cat="arcade"><div class="icon">🪙</div><span class="tag">ARCADE</span><h3>Coin Flip</h3><p>Heads or tails? See if your luck is good.</p><button onclick="flip()">Play</button></div>
+</main>
+<div class="modal" id="modal"><div class="box"><h2 id="title"></h2><div id="content"></div><br><button onclick="closeModal()">Close</button></div></div>
+<footer>GameHub • Made as a standalone browser page</footer>
+<script>
+const modal=document.getElementById('modal'),title=document.getElementById('title'),content=document.getElementById('content');
+function open(t,c){title.textContent=t;content.innerHTML=c;modal.classList.add('show')}
+function closeModal(){modal.classList.remove('show')}
+function scrollToGames(){document.getElementById('grid').scrollIntoView({behavior:'smooth'})}
+function filterGames(){let q=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(q)?'block':'none')}
+function filterCat(cat){document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.cat===cat?'block':'none')}
+function showAll(){document.querySelectorAll('.card').forEach(c=>c.style.display='block');document.getElementById('search').value=''}
+function randomGame(){let cards=[...document.querySelectorAll('.card')];cards[Math.floor(Math.random()*cards.length)].querySelector('button').click()}
+function flip(){open('Coin Flip','<h1>🪙</h1><button onclick="this.parentElement.innerHTML=this.parentElement.innerHTML+\'<p><b>\'+(Math.random()<.5?\'HEADS!\':\'TAILS!\')+\'</b></p>\'">Flip!</button>')}
+function guess(){let n=Math.floor(Math.random()*100)+1;open('Number Guess',`<p>I'm thinking of a number from 1–100.</p><input id="g" type="number" style="padding:10px;width:100px"><button onclick="let x=+document.getElementById('g').value;document.getElementById('r').textContent=x==${n}?'🎉 Correct!':x<${n}?'⬆️ Too low!':'⬇️ Too high!'">Guess</button><p id="r"></p>`)}
+function clicker(){open('Click Challenge','<p>Click as fast as you can for 10 seconds!</p><button id="cb">Clicks: 0</button><p id="timer">10</p>');let n=0,t=10, b=document.getElementById('cb');b.onclick=()=>n++;let iv=setInterval(()=>{t--;document.getElementById('timer').textContent=t;if(t<=0){clearInterval(iv);b.disabled=true;b.textContent="Score: "+n}},1000)}
+function reaction(){open('Reaction Rush','<p>Wait for green...</p><button id="rb" disabled>WAIT</button>');let b=document.getElementById('rb'),start;setTimeout(()=>{b.disabled=false;b.textContent='CLICK!';start=performance.now();b.onclick=()=>{b.textContent=Math.round(performance.now()-start)+' ms'}},1000+Math.random()*3000)}
+function memory(){let a=['🍎','🍌','🍇','🍉'];let cards=[...a,...a].sort(()=>Math.random()-.5);open('Memory Match',`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${cards.map((x,i)=>`<button id="m${i}" onclick="mem(${i},'${x}')">?</button>`).join('')}</div>`);window.ms=[];window.mt=[]}
+function mem(i,x){let b=document.getElementById('m'+i);if(b.textContent!=='?')return;b.textContent=x;ms.push(i);mt.push(x);if(ms.length===2){setTimeout(()=>{if(mt[0]!==mt[1])ms.forEach(j=>document.getElementById('m'+j).textContent='?');ms=[];mt=[]},500)}}
+function space(){open('Space Dodge','<p>🚀 Coming soon! This slot is ready for your own action game.</p>')}
+function stickman(){open('Stickman Duels',`<p><b>Player 1:</b> A / D to move, W to jump, F to attack</p><p><b>Player 2:</b> ← / → to move, ↑ to jump, L to attack</p><canvas id="fight" width="460" height="240" style="max-width:100%;background:#0b1020;border-radius:12px"></canvas><p id="fightmsg">Fight!</p>`);setTimeout(startStickman,50)}
+function startStickman(){const c=document.getElementById('fight'),x=c.getContext('2d'),keys={};let p1={x:80,y:180,h:100,v:0},p2={x:360,y:180,h:100,v:0};addEventListener('keydown',e=>keys[e.key.toLowerCase()]=1);addEventListener('keyup',e=>keys[e.key.toLowerCase()]=0);function loop(){x.clearRect(0,0,c.width,c.height);x.fillStyle='#202a4d';x.fillRect(0,210,460,30);for(const p of [p1,p2]){p.v+=.7;p.y+=p.v;if(p.y>180){p.y=180;p.v=0}}if(keys.a)p1.x-=3;if(keys.d)p1.x+=3;if(keys.w&&p1.y===180)p1.v=-10;if(keys.arrowleft)p2.x-=3;if(keys.arrowright)p2.x+=3;if(keys.arrowup&&p2.y===180)p2.v=-10;if(keys.f&&Math.abs(p1.x-p2.x)<55)p2.h-=.6;if(keys.l&&Math.abs(p1.x-p2.x)<55)p1.h-=.6;draw(p1,'#6f7cff');draw(p2,'#ff667d');document.getElementById('fightmsg').textContent=p1.h<=0?'Player 2 wins!':p2.h<=0?'Player 1 wins!':'P1 HP: '+Math.max(0,p1.h|0)+' | P2 HP: '+Math.max(0,p2.h|0);if(p1.h>0&&p2.h>0)requestAnimationFrame(loop)}function draw(p,col){x.fillStyle=col;x.fillRect(p.x-8,p.y-35,16,35);x.beginPath();x.arc(p.x,p.y-43,8,0,7);x.fill();x.fillRect(p.x-18,p.y-25,36,5)}loop()}
+</script>
+</body>
+</html>
